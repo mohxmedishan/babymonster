@@ -6,12 +6,14 @@ function clean(value = "") {
   return String(value).replace(/\s+/g, " ").trim();
 }
 function key(value = "") {
-  return clean(value).toLowerCase().normalize("NFKD").replace(/[^a-z0-9가-힣]/g, "");
+  return clean(value).toLowerCase().normalize("NFKD").replace(/\b(ep|album|mini album|digital single|single)\b/g, " ")
+    .replace(/[^a-z0-9가-힣]/g, "");
 }
 function canonicalTitle(value = "") {
   return clean(value).toLowerCase().normalize("NFKD")
     .replace(/\([^)]*(deluxe|limited|edition|version|ver\.?|remaster|remastered|expanded|bonus|clean|explicit|repackage|japanese|english)[^)]*\)|\[[^\]]*(deluxe|limited|edition|version|ver\.?|remaster|remastered|expanded|bonus|clean|explicit|repackage|japanese|english)[^\]]*\]/gi, " ")
-    .replace(/\b(deluxe edition|limited edition|expanded edition|digital version|remastered|remaster|repackage|bonus tracks|clean version|explicit version|japanese ver\.?|english ver\.?)\b/gi, " ")
+    .replace(/\b(deluxe edition|limited edition|expanded edition|digital version|remastered|remaster|repackage|bonus tracks|clean version|explicit version|japanese ver\.?|english ver\?)\b/gi, " ")
+    .replace(/\b(ep|album|mini album|digital single|single)\b/g, " ")
     .replace(/[^a-z0-9가-힣]/g, "");
 }
 function classify(primaryType, title, trackCount) {
@@ -75,7 +77,7 @@ export default async function handler(req, res) {
     const mbRows = (mb["release-groups"] || []).filter(x =>
       ["album", "ep", "single"].includes(String(x["primary-type"] || "").toLowerCase()) &&
       !((x["secondary-types"] || []).some(t => ["compilation", "live", "remix", "soundtrack", "tribute", "dj-mix"].includes(String(t).toLowerCase()))) &&
-      !/\b(tribute to|karaoke|instrumental cover|8d audio|sped up|slowed|nightcore|reaction|review|playlist)\b/i.test(String(x.title || ""))
+      !/\b(tribute to|karaoke|instrumental cover|8d audio|sped up|slowed|nightcore|reaction|review|playlist|world tour|tour in|live in|live version|live album|concert|arena|in japan|live at)\b/i.test(String(x.title || ""))
     );
     const mbByTitle = new Map(mbRows.map(x => [`${key(x.title)}|${yearOf(x["first-release-date"])}`, x]));
     const used = new Set();
@@ -83,7 +85,7 @@ export default async function handler(req, res) {
 
     for (const item of itunesRows) {
       const title = clean(item.collectionName);
-      if (!canonicalTitle(title) || /\b(tribute to|karaoke|instrumental cover|8d audio|sped up|slowed|nightcore|reaction|review|playlist)\b/i.test(title)) continue;
+      if (!canonicalTitle(title) || /\b(tribute to|karaoke|instrumental cover|8d audio|sped up|slowed|nightcore|reaction|review|playlist|world tour|tour in|live in|live version|live album|concert|arena|in japan|live at)\b/i.test(title)) continue;
       const date = item.releaseDate || "";
       const normalizedKey = `${canonicalTitle(title)}|${yearOf(date)}`;
       const match = mbByTitle.get(normalizedKey) ||
