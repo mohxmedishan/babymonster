@@ -100,12 +100,12 @@
 
         function saveApiKey() {
             const inputVal = document.getElementById('apiKeyInput').value.trim();
-            if (inputVal.startsWith('AIza')) {
+            if (inputVal.length > 10) {
                 localStorage.setItem('gemini_api_key', inputVal);
                 document.getElementById('apiKeyModal').classList.add('hidden');
                 fetchBabyMonsterNews();
             } else {
-                alert('Please enter a valid Gemini API key starting with AIza...');
+                alert('Please enter a valid Gemini API key.');
             }
         }
 
