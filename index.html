@@ -177,6 +177,30 @@ function showTrack(albumIndex,trackIndex){
  openModal("infoModal");
 }
 function safeLink(url){try{const u=new URL(url,location.href);return ["http:","https:"].includes(u.protocol)?u.href:"#"}catch{return "#"}}
+function normalizeArticle(article = {}) {
+  const title = String(article.title || "").trim();
+  const link = safeLink(article.link || article.url || "");
+  const rawDate = article.date || article.pubDate || article.publishedAt || article.published || "";
+  const parsedDate = rawDate ? Date.parse(rawDate) : NaN;
+  const source = String(article.author || article.source || article.publisher || "Google News").trim();
+  const description = String(article.description || article.summary || "Latest coverage and updates about BABYMONSTER.")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const keywords = (title + " " + description).toLowerCase();
+  const relevance = (keywords.includes("babymonster") ? 3 : 0)
+    + (keywords.includes("baby monster") ? 2 : 0)
+    + (keywords.includes("yg entertainment") ? 1 : 0);
+  return {
+    title: title || "BABYMONSTER news update",
+    link,
+    source,
+    ts: Number.isFinite(parsedDate) ? parsedDate : 0,
+    description,
+    relevance
+  };
+}
+
 function renderArticles(){
  const sort=$("#sortSelect").value,dateFilter=$("#dateSelect").value,now=new Date();
  let items=cachedArticles.filter(a=>{if(!a.ts)return dateFilter==="all";const d=new Date(a.ts);if(dateFilter==="today")return d.toDateString()===now.toDateString();if(dateFilter==="week")return now-a.ts<=7*864e5&&now-a.ts>=0;return true});
