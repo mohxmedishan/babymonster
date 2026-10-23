@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#09090d">
+<title>BABYMONSTER.HUB — MONSTIEZ Terminal</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={darkMode:"class",theme:{extend:{fontFamily:{sans:["Plus Jakarta Sans","sans-serif"],mono:["JetBrains Mono","monospace"]},colors:{ink:"#09090d",panel:"#111119",pink:"#f472b6",violet:"#a78bfa"}}}};
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{font-family:"Plus Jakarta Sans",sans-serif;background:#09090d;color:#f4f4f5}.mono{font-family:"JetBrains Mono",monospace}.glass{background:rgba(19,19,29,.72);border:1px solid rgba(255,255,255,.085);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}.grid-bg{background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:36px 36px}.glow{box-shadow:0 0 55px -25px rgba(244,114,182,.6)}.gradient-text{background:linear-gradient(100deg,#f9a8d4,#c4b5fd 60%,#93c5fd);-webkit-background-clip:text;background-clip:text;color:transparent}.tab-btn{border:1px solid transparent;color:#a1a1aa;transition:.2s}.tab-btn.active,.tab-btn:hover{color:#fff;background:rgba(244,114,182,.09);border-color:rgba(244,114,182,.24)}.tab-panel{animation:fadein .25s ease}.hidden-panel{display:none!important}@keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}.status-dot{animation:pulse 1.8s infinite}@keyframes pulse{50%{opacity:.35;box-shadow:0 0 0 7px rgba(244,114,182,.07)}}.member-card{transition:transform .2s,border-color .2s}.member-card:hover{transform:translateY(-3px);border-color:rgba(244,114,182,.35)}.modal-backdrop{background:rgba(2,2,8,.78);backdrop-filter:blur(9px)}.scrollbar::-webkit-scrollbar{width:6px}.scrollbar::-webkit-scrollbar-thumb{background:#3f3f46;border-radius:10px}button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #f472b6;outline-offset:3px}.cover{background:radial-gradient(circle at 80% 15%,rgba(244,114,182,.25),transparent 35%),linear-gradient(145deg,#292036,#101018 68%)}.tiny-label{letter-spacing:.15em;font-size:10px;text-transform:uppercase}
+</style>
+</head>
+<body class="min-h-screen grid-bg">
+<header class="sticky top-0 z-40 border-b border-white/10 glass">
+ <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+  <a href="#" class="flex items-center gap-3" aria-label="BABYMONSTER HUB home">
+   <span class="w-2.5 h-2.5 rounded-full bg-pink status-dot"></span><span class="mono font-bold tracking-tight text-sm sm:text-base gradient-text">BABYMONSTER.HUB</span><span class="hidden md:inline tiny-label mono text-zinc-500">MONSTIEZ TERMINAL / v1.0</span>
+  </a>
+  <div class="flex items-center gap-2">
+   <span class="hidden sm:inline-flex items-center gap-2 text-[10px] mono text-zinc-500"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> SYSTEM ONLINE</span>
+   <button id="settingsOpen" class="px-3 py-2 rounded-xl border border-white/10 text-xs text-zinc-300 hover:text-white hover:border-pink/40 transition">⚙️ Change API Key</button>
+  </div>
+ </div>
+ <nav class="max-w-7xl mx-auto px-4 sm:px-6 pb-3 flex gap-2 overflow-x-auto" aria-label="Main navigation">
+  <button class="tab-btn active rounded-xl px-4 py-2 text-xs mono whitespace-nowrap" data-tab="news">01 / NEWS FEED</button>
+  <button class="tab-btn rounded-xl px-4 py-2 text-xs mono whitespace-nowrap" data-tab="music">02 / DISCOGRAPHY</button>
+  <button class="tab-btn rounded-xl px-4 py-2 text-xs mono whitespace-nowrap" data-tab="members">03 / MEMBERS</button>
+  <button class="tab-btn rounded-xl px-4 py-2 text-xs mono whitespace-nowrap" data-tab="countdown">04 / COUNTDOWN</button>
+ </nav>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+ <section id="panel-news" class="tab-panel">
+  <div class="grid lg:grid-cols-[1.4fr_.6fr] gap-5 mb-7">
+   <div class="glass rounded-3xl p-6 sm:p-9 glow relative overflow-hidden">
+    <div class="absolute -right-16 -top-20 w-64 h-64 rounded-full bg-pink/10 blur-3xl pointer-events-none"></div>
+    <div class="tiny-label mono text-pink mb-4">✦ GLOBAL FAN RADAR / LIVE AGGREGATOR</div>
+    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.04] mb-4">Good Vibes<br><span class="gradient-text">Only 💖</span></h1>
+    <p class="text-zinc-400 text-sm sm:text-base max-w-xl leading-7">Your MONSTIEZ signal for BABYMONSTER updates, release coverage, chart moments, and fan milestones. One hub. All the energy.</p>
+    <div class="flex flex-wrap gap-3 mt-7">
+     <button id="refreshBtn" class="rounded-xl px-5 py-3 bg-gradient-to-r from-pink-500 to-violet-500 text-white text-sm font-bold hover:opacity-90 transition disabled:opacity-50">↻ Scan Updates Now</button>
+     <span id="newsStatus" class="self-center mono text-[10px] text-zinc-500">READY FOR SIGNAL</span>
+    </div>
+   </div>
+   <div class="glass rounded-3xl p-6 flex flex-col justify-between">
+    <div><div class="tiny-label mono text-zinc-500 mb-3">NETWORK STATUS</div><div class="flex items-center gap-2 mb-5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span><span id="sourceStatus" class="text-sm font-semibold">Waiting for first scan</span></div>
+     <div class="grid grid-cols-2 gap-3">
+      <div class="rounded-2xl bg-white/[.035] border border-white/[.06] p-4"><div class="mono text-2xl font-bold" id="articleCount">—</div><div class="tiny-label text-zinc-500 mt-2">ARTICLES LOADED</div></div>
+      <div class="rounded-2xl bg-white/[.035] border border-white/[.06] p-4"><div class="mono text-2xl font-bold">24/7</div><div class="tiny-label text-zinc-500 mt-2">FAN SIGNAL</div></div>
+     </div>
+    </div><p class="text-xs text-zinc-500 leading-5 mt-6">News availability depends on the API route and external RSS sources. Headlines link to their original publishers.</p>
+   </div>
+  </div>
+  <div class="glass rounded-2xl p-4 mb-5 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+   <div class="tiny-label mono text-zinc-500">FEED CONTROLS</div>
+   <div class="flex flex-col sm:flex-row gap-3">
+    <label class="text-xs text-zinc-400 flex items-center gap-2">SORT
+     <select id="sortSelect" class="bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-zinc-100"><option value="latest">Latest First</option><option value="popular">Popularity / Relevance</option><option value="source">Alphabetical Source</option></select>
+    </label>
+    <label class="text-xs text-zinc-400 flex items-center gap-2">DATE
+     <select id="dateSelect" class="bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-zinc-100"><option value="all">All-Time</option><option value="today">Today Only</option><option value="week">Past 7 Days</option></select>
+    </label>
+   </div>
+  </div>
+  <div id="newsFeed" class="grid md:grid-cols-2 gap-4" aria-live="polite"><div class="glass rounded-2xl p-8 text-center text-zinc-400 md:col-span-2">Connecting to the news radar…</div></div>
+ </section>
+
+ <section id="panel-music" class="tab-panel hidden-panel">
+  <div class="mb-8"><div class="tiny-label mono text-pink mb-3">02 / AUDIO ARCHIVE</div><h1 class="text-3xl sm:text-5xl font-extrabold mb-3">The <span class="gradient-text">Sound Lab.</span></h1><p class="text-zinc-400 max-w-2xl text-sm leading-6">Explore releases, track notes, and official listening links. Select any track for a quick info panel.</p></div>
+  <div id="albumGrid" class="grid sm:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+  <p class="text-xs text-zinc-500 mt-5">Release metadata is presented as a fan reference. Streaming and video links open official platform searches; availability may vary by region.</p>
+ </section>
+
+ <section id="panel-members" class="tab-panel hidden-panel">
+  <div class="mb-8"><div class="tiny-label mono text-pink mb-3">03 / THE LINEUP</div><h1 class="text-3xl sm:text-5xl font-extrabold mb-3">Seven stars. <span class="gradient-text">One orbit.</span></h1><p class="text-zinc-400 text-sm leading-6 max-w-2xl">Meet the members and explore vocal, rap, and dance strengths. Line assignments are fan-friendly highlights, not official exclusive roles.</p></div>
+  <div class="flex flex-wrap gap-2 mb-5" id="memberFilters"><button class="filter-btn rounded-xl px-4 py-2 text-xs mono border border-pink/40 bg-pink/10" data-filter="all">ALL MEMBERS</button><button class="filter-btn rounded-xl px-4 py-2 text-xs mono border border-white/10 text-zinc-400" data-filter="vocal">VOCAL LINE</button><button class="filter-btn rounded-xl px-4 py-2 text-xs mono border border-white/10 text-zinc-400" data-filter="rap">RAP LINE</button><button class="filter-btn rounded-xl px-4 py-2 text-xs mono border border-white/10 text-zinc-400" data-filter="dance">DANCE LINE</button></div>
+  <div id="memberGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+ </section>
+
+ <section id="panel-countdown" class="tab-panel hidden-panel">
+  <div class="mb-8"><div class="tiny-label mono text-pink mb-3">04 / MILESTONE TRACKER</div><h1 class="text-3xl sm:text-5xl font-extrabold mb-3">Next up, <span class="gradient-text">MONSTIEZ.</span></h1><p class="text-zinc-400 text-sm leading-6 max-w-2xl">Track fan milestones and add your own events. Unannounced dates stay unannounced—no fictional comeback or tour schedules.</p></div>
+  <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-5">
+   <div><div class="tiny-label mono text-zinc-500 mb-3">EVENT COUNTDOWN / YOUR LOCAL TIMEZONE</div><div id="eventList" class="space-y-3"></div>
+    <form id="eventForm" class="glass rounded-2xl p-5 mt-4"><h2 class="font-bold mb-4">＋ Add a fan event</h2><div class="grid sm:grid-cols-2 gap-3"><label class="text-xs text-zinc-400">EVENT NAME<input id="eventName" required maxlength="80" placeholder="e.g. Comeback watch party" class="block mt-2 w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-3 text-sm text-white"></label><label class="text-xs text-zinc-400">DATE & TIME<input id="eventDate" required type="datetime-local" class="block mt-2 w-full rounded-xl bg-zinc-950 border border-zinc-700 px-3 py-3 text-sm text-white"></label></div><button class="mt-4 rounded-xl px-4 py-3 bg-white text-zinc-950 font-bold text-sm hover:bg-pink-100">Save event locally</button></form>
+   </div>
+   <div><div class="tiny-label mono text-zinc-500 mb-3">ACHIEVEMENT TRACKER</div><div class="grid sm:grid-cols-2 gap-3">
+    <article class="glass rounded-2xl p-5"><div class="text-2xl mb-4">▶</div><div class="mono text-xl font-bold">100M+</div><h3 class="font-bold mt-1">MV view milestones</h3><p class="text-xs text-zinc-500 mt-2 leading-5">Celebrate major view milestones across official BABYMONSTER videos. Verify current counts on YouTube.</p><a class="text-xs text-pink inline-block mt-4" target="_blank" rel="noopener" href="https://www.youtube.com/@BABYMONSTER">Open official channel ↗</a></article>
+    <article class="glass rounded-2xl p-5"><div class="text-2xl mb-4">♫</div><div class="mono text-xl font-bold">GLOBAL</div><h3 class="font-bold mt-1">Chart moments</h3><p class="text-xs text-zinc-500 mt-2 leading-5">Follow chart placements and streaming milestones from trusted music charts.</p><a class="text-xs text-pink inline-block mt-4" target="_blank" rel="noopener" href="https://www.billboard.com/">Explore Billboard ↗</a></article>
+    <article class="glass rounded-2xl p-5"><div class="text-2xl mb-4">✦</div><div class="mono text-xl font-bold">MONSTIEZ</div><h3 class="font-bold mt-1">Fan-powered growth</h3><p class="text-xs text-zinc-500 mt-2 leading-5">Every stream, share, and kind message helps the community shine.</p></article>
+    <article class="glass rounded-2xl p-5"><div class="text-2xl mb-4">▣</div><div class="mono text-xl font-bold">PHYSICAL</div><h3 class="font-bold mt-1">Album milestones</h3><p class="text-xs text-zinc-500 mt-2 leading-5">Check official chart reports for verified sales and certification updates.</p><a class="text-xs text-pink inline-block mt-4" target="_blank" rel="noopener" href="https://circlechart.kr/">Circle Chart ↗</a></article>
+   </div></div>
+  </div>
+ </section>
+ <footer class="border-t border-white/10 mt-12 pt-5 flex flex-col sm:flex-row justify-between gap-2 text-[10px] mono text-zinc-600"><span>BABYMONSTER.HUB // FAN-MADE INTERFACE</span><span>NOT AFFILIATED WITH YG ENTERTAINMENT · BUILT FOR MONSTIEZ</span></footer>
+</main>
+
+<div id="settingsModal" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+ <div class="glass rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl"><div class="flex justify-between items-start gap-4"><div><div class="tiny-label mono text-pink mb-2">SYSTEM CONFIG</div><h2 id="settingsTitle" class="text-2xl font-extrabold">API settings</h2></div><button data-close="settingsModal" class="text-zinc-400 hover:text-white text-xl" aria-label="Close settings">×</button></div>
+ <p class="text-sm text-zinc-400 leading-6 mt-3">Optional client-side key for a backend that expects it. The browser cannot securely hide secrets; use server-side environment variables for production credentials.</p>
+ <label class="block text-xs text-zinc-400 mt-5">API KEY<input id="apiKeyInput" type="password" autocomplete="off" placeholder="Paste key if your setup requires one" class="mt-2 w-full rounded-xl bg-zinc-950 border border-zinc-700 px-4 py-3 text-sm"></label>
+ <div class="flex gap-3 mt-5"><button id="saveKey" class="flex-1 rounded-xl bg-gradient-to-r from-pink-500 to-violet-500 py-3 text-sm font-bold">Save settings</button><button id="clearKey" class="rounded-xl border border-white/10 px-4 py-3 text-sm">Clear</button></div><p id="settingsMessage" class="text-xs text-zinc-500 mt-3" aria-live="polite"></p>
+ </div>
+</div>
+<div id="infoModal" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
+ <div class="glass rounded-3xl p-6 sm:p-8 max-w-lg w-full max-h-[85vh] overflow-y-auto scrollbar"><div class="flex justify-between items-start gap-4"><div><div class="tiny-label mono text-pink mb-2">TRACK NOTES / FAN ARCHIVE</div><h2 id="infoTitle" class="text-2xl font-extrabold"></h2></div><button data-close="infoModal" class="text-zinc-400 hover:text-white text-xl" aria-label="Close track information">×</button></div><div id="infoBody" class="text-sm text-zinc-300 leading-7 mt-5"></div><div id="infoLinks" class="flex flex-wrap gap-3 mt-6"></div><p class="text-[11px] text-zinc-500 mt-5">This panel contains descriptions and themes, not full copyrighted lyrics. For lyrics, consult licensed or official sources.</p></div>
+</div>
+
+<script>
+"use strict";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const STORAGE={key:"bmhub_api_key",events:"bmhub_events"};
+let cachedArticles=[], rssFallbackUsed=false;
+const albums=[
+ {title:"BABYMONS7ER",year:"2024",type:"Mini Album",tags:["Hip-hop","Pop","R&B"],cover:"B7",tracks:[["SHEESH","A bold, theatrical hip-hop-pop title track built around a dramatic hook."],["LIKE THAT","A sleek, confident pop-R&B track with a smooth groove."],["BATTER UP","A high-energy debut-era anthem with punchy rap and performance-driven production."],["DREAM","A reflective track about ambition, growth, and staying connected to a dream."]],spotify:"BABYMONS7ER BABYMONSTER",youtube:"BABYMONSTER BABYMONS7ER official"} ,
+ {title:"DRIP",year:"2024",type:"Studio Album",tags:["Hip-hop","Dance-pop","R&B"],cover:"DRIP",tracks:[["DRIP","A confident, high-impact track centered on individuality and stage presence."],["CLIK CLAK","A rap-forward performance track with a sharp, rhythmic attitude."],["FOREVER","A bright, polished pop song about lasting connection and confidence."],["LOVE, MAYBE","A softer mood within the album's energetic palette."]],spotify:"DRIP BABYMONSTER",youtube:"BABYMONSTER DRIP official MV"},
+ {title:"BATTER UP",year:"2023",type:"Digital Single",tags:["Hip-hop","Dance"],cover:"BU",tracks:[["BATTER UP","A debut-era statement track with bold chants, punchy beats, and team energy."]],spotify:"BATTER UP BABYMONSTER",youtube:"BABYMONSTER BATTER UP official MV"},
+ {title:"FOREVER",year:"2024",type:"Digital Single",tags:["Pop","Dance-pop"],cover:"∞",tracks:[["FOREVER","A bright, confident pop track with a polished, summery feel."]],spotify:"FOREVER BABYMONSTER",youtube:"BABYMONSTER FOREVER official MV"},
+ {title:"CLIK CLAK",year:"2024",type:"Track spotlight",tags:["Rap","Hip-hop"],cover:"C!",tracks:[["CLIK CLAK","A rap-focused showcase with crisp delivery and a strong performance identity."]],spotify:"CLIK CLAK BABYMONSTER",youtube:"BABYMONSTER CLIK CLAK official MV"},
+ {title:"LIKE THAT",year:"2024",type:"Track spotlight",tags:["R&B","Pop"],cover:"♡",tracks:[["LIKE THAT","A smooth, self-assured pop-R&B track with a more relaxed groove."]],spotify:"LIKE THAT BABYMONSTER",youtube:"BABYMONSTER LIKE THAT performance"}];
+const members=[
+ {name:"Ruka",color:"#f9a8d4",initial:"RK",nationality:"Japanese",birthday:"2002.03.20",roles:["rap","dance"],position:"Rapper · Dancer",note:"Known for sharp rap delivery, confident stage presence, and clean movement."},
+ {name:"Pharita",color:"#c4b5fd",initial:"PH",nationality:"Thai",birthday:"2005.08.26",roles:["vocal"],position:"Vocalist",note:"Recognized for a clear, airy vocal tone and graceful performance style."},
+ {name:"Asa",color:"#93c5fd",initial:"AS",nationality:"Japanese",birthday:"2006.04.17",roles:["rap","dance"],position:"Rapper · Dancer",note:"A quick, precise rap style pairs with a dynamic and expressive stage presence."},
+ {name:"Ahyeon",color:"#fda4af",initial:"AH",nationality:"South Korean",birthday:"2007.04.11",roles:["vocal","rap","dance"],position:"Vocalist · Rapper · Dancer",note:"Known for versatile performance skills and powerful, expressive vocals."},
+ {name:"Rami",color:"#86efac",initial:"RA",nationality:"South Korean",birthday:"2007.10.17",roles:["vocal"],position:"Vocalist",note:"A distinctive vocal color and strong control make her a standout vocal performer."},
+ {name:"Rora",color:"#fcd34d",initial:"RO",nationality:"South Korean",birthday:"2008.08.14",roles:["vocal"],position:"Vocalist",note:"A warm, emotive tone and polished delivery bring color to the group's sound."},
+ {name:"Chiquita",color:"#fdba74",initial:"CQ",nationality:"Thai",birthday:"2009.02.17",roles:["vocal","dance"],position:"Vocalist · Dancer",note:"Bright energy, expressive movement, and a distinctive youthful vocal tone."}
+];
+function renderAlbums(){
+ $("#albumGrid").innerHTML=albums.map((a,i)=>`<article class="glass rounded-3xl overflow-hidden member-card"><div class="cover p-5 min-h-44 flex items-start justify-between"><div><div class="tiny-label mono text-zinc-400">${esc(a.type)} / ${esc(a.year)}</div><div class="text-4xl font-extrabold mt-4 gradient-text">${esc(a.cover)}</div></div><div class="mono text-[10px] text-zinc-500">ARCHIVE_${String(i+1).padStart(2,"0")}</div></div><div class="p-5"><h2 class="text-xl font-extrabold">${esc(a.title)}</h2><div class="flex flex-wrap gap-2 mt-3">${a.tags.map(t=>`<span class="rounded-full bg-white/[.05] border border-white/[.07] px-2.5 py-1 text-[10px] text-zinc-400">${esc(t)}</span>`).join("")}</div><div class="mt-5"><div class="tiny-label mono text-zinc-500 mb-3">TRACKLIST PREVIEW</div><div class="space-y-2">${a.tracks.slice(0,4).map((t,j)=>`<button class="track-btn w-full flex items-center justify-between gap-3 text-left text-sm text-zinc-300 hover:text-pink transition" data-album="${i}" data-track="${j}"><span><span class="mono text-zinc-600 mr-2">${String(j+1).padStart(2,"0")}</span>${esc(t[0])}</span><span class="text-pink">↗</span></button>`).join("")}</div></div><div class="flex flex-wrap gap-2 mt-5"><a class="rounded-xl bg-white text-zinc-950 px-3 py-2 text-xs font-bold hover:bg-pink-100" target="_blank" rel="noopener" href="https://open.spotify.com/search/${encodeURIComponent(a.spotify)}">Stream on Spotify ↗</a><a class="rounded-xl border border-white/10 px-3 py-2 text-xs text-zinc-300 hover:border-pink/40" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent(a.youtube)}">Watch MV on YouTube ↗</a></div></div></article>`).join("");
+}
+function renderMembers(filter="all"){
+ $("#memberGrid").innerHTML=members.filter(m=>filter==="all"||m.roles.includes(filter)).map(m=>`<article class="member-card glass rounded-3xl p-5 relative overflow-hidden"><div class="absolute -right-7 -top-7 w-28 h-28 rounded-full blur-3xl opacity-20" style="background:${m.color}"></div><div class="flex items-center justify-between relative"><div class="w-14 h-14 rounded-2xl flex items-center justify-center font-extrabold text-xl" style="background:${m.color}20;border:1px solid ${m.color}60;color:${m.color}">${m.initial}</div><span class="tiny-label mono text-zinc-500">MEMBER / 07</span></div><h2 class="text-2xl font-extrabold mt-5">${m.name}</h2><p class="text-sm mt-1" style="color:${m.color}">${m.position}</p><div class="grid grid-cols-2 gap-3 mt-5"><div class="rounded-xl bg-white/[.035] p-3"><div class="tiny-label mono text-zinc-500">NATIONALITY</div><div class="text-xs mt-2">${m.nationality}</div></div><div class="rounded-xl bg-white/[.035] p-3"><div class="tiny-label mono text-zinc-500">BIRTHDAY</div><div class="text-xs mt-2">${m.birthday}</div></div></div><p class="text-xs leading-6 text-zinc-400 mt-4">${m.note}</p><div class="flex gap-2 flex-wrap mt-4">${m.roles.map(r=>`<span class="rounded-full px-2.5 py-1 border text-[10px] mono uppercase" style="border-color:${m.color}50;color:${m.color}">${r} line</span>`).join("")}</div></article>`).join("")||`<div class="glass rounded-2xl p-8 text-zinc-400">No members in this filter.</div>`;
+}
+function openModal(id){const el=$("#"+id);el.classList.remove("hidden");el.classList.add("flex");document.body.style.overflow="hidden"}
+function closeModal(id){const el=$("#"+id);el.classList.add("hidden");el.classList.remove("flex");document.body.style.overflow=""}
+function showTrack(albumIndex,trackIndex){
+ const a=albums[albumIndex],t=a.tracks[trackIndex];if(!a||!t)return;
+ $("#infoTitle").textContent=t[0];
+ $("#infoBody").innerHTML=`<p class="text-zinc-300">${esc(t[1])}</p><div class="mt-5 rounded-2xl bg-white/[.035] border border-white/[.06] p-4"><div class="tiny-label mono text-pink mb-2">LYRIC GUIDE</div><p class="text-zinc-400">Romanized: Consult an authorized lyric source for the complete romanization.</p><p class="text-zinc-400 mt-2">Hangul: See licensed or official lyric listings for the original Korean text.</p><p class="text-zinc-400 mt-2">English: The track's overall theme is summarized above; this is not a line-by-line translation.</p></div>`;
+ $("#infoLinks").innerHTML=`<a class="rounded-xl bg-white text-zinc-950 px-4 py-3 text-xs font-bold" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent("BABYMONSTER "+t[0]+" official") }">Find official audio ↗</a><a class="rounded-xl border border-white/10 px-4 py-3 text-xs" target="_blank" rel="noopener" href="https://open.spotify.com/search/${encodeURIComponent("BABYMONSTER "+t[0])}">Find on Spotify ↗</a>`;
+ openModal("infoModal");
+}
+function normalizeArticle(item){
+ const title=item.title||item.name||"Untitled article", link=item.link||item.url||item.guid||"#", date=item.pubDate||item.published||item.date||item.isoDate||"";
+ const d=new Date(date);return {title,link,date:date,ts:Number.isNaN(d.getTime())?0:d.getTime(),source:item.author||item.source?.name||item.source||item.creator||"News source",description:item.description||item.summary||item.contentSnippet||"",relevance:((title.match(/babymonster|baby monster|monstiez|yg entertainment|k-pop|comeback|album|music video/ig)||[]).length)};
+}
+function safeLink(url){try{const u=new URL(url,location.href);return ["http:","https:"].includes(u.protocol)?u.href:"#"}catch{return "#"}}
+function renderArticles(){
+ const sort=$("#sortSelect").value,dateFilter=$("#dateSelect").value,now=new Date();
+ let items=cachedArticles.filter(a=>{if(!a.ts)return dateFilter==="all";const d=new Date(a.ts);if(dateFilter==="today")return d.toDateString()===now.toDateString();if(dateFilter==="week")return now-a.ts<=7*864e5&&now-a.ts>=0;return true});
+ items.sort((a,b)=>sort==="latest"?b.ts-a.ts:sort==="source"?a.source.localeCompare(b.source):(b.relevance-a.relevance||b.ts-a.ts));
+ $("#articleCount").textContent=items.length;
+ if(!items.length){$("#newsFeed").innerHTML=`<div class="glass rounded-2xl p-8 text-center text-zinc-400 md:col-span-2">No articles match this filter. Try All-Time or scan again.</div>`;return}
+ $("#newsFeed").innerHTML=items.map(a=>`<article class="glass rounded-2xl p-5 sm:p-6 hover:border-pink/30 transition group"><div class="flex flex-wrap items-center justify-between gap-2 mb-4"><span class="rounded-full border border-pink/25 bg-pink/10 text-pink px-3 py-1 text-[10px] mono">${esc(a.source)}</span><time class="text-[10px] mono text-zinc-500">${a.ts?esc(new Date(a.ts).toLocaleString()):"Date unavailable"}</time></div><h2 class="text-lg font-bold leading-snug group-hover:text-pink-200 transition">${esc(a.title)}</h2><p class="text-sm text-zinc-400 leading-6 mt-3">${esc(a.description.replace(/<[^>]*>/g," ").slice(0,240))}${a.description.length>240?"…":""}</p><a class="inline-flex mt-5 text-xs font-bold text-pink hover:text-violet-300" href="${esc(safeLink(a.link))}" target="_blank" rel="noopener noreferrer">Read full article →</a></article>`).join("");
+}
+async function fetchRSSFallback(){
+ const feeds=[
+  "https://news.google.com/rss/search?q=BABYMONSTER+when:7d&hl=en-US&gl=US&ceid=US:en",
+  "https://news.google.com/rss/search?q=BABYMONSTER+YG+Entertainment&hl=en-US&gl=US&ceid=US:en"
+ ];
+ for(const feedUrl of feeds){
+  const proxies=[
+   "https://api.allorigins.win/raw?url="+encodeURIComponent(feedUrl),
+   "https://corsproxy.io/?url="+encodeURIComponent(feedUrl)
+  ];
+  for(const url of proxies){
+   try{const res=await fetch(url,{signal:AbortSignal.timeout(9000)});if(!res.ok)continue;const text=await res.text();const doc=new DOMParser().parseFromString(text,"text/xml");if(doc.querySelector("parsererror"))continue;
+    const parsed=[...doc.querySelectorAll("item")].map(node=>({title:node.querySelector("title")?.textContent||"",link:node.querySelector("link")?.textContent||"",pubDate:node.querySelector("pubDate")?.textContent||"",author:node.querySelector("source")?.textContent||"Google News",description:node.querySelector("description")?.textContent||""}));if(parsed.length)return parsed;
+   }catch(e){/* Try the next public proxy. */}
+  }
+ }
+ throw new Error("RSS fallback unavailable");
+}
+async function fetchBabyMonsterNews(){
+ const btn=$("#refreshBtn");btn.disabled=true;$("#newsStatus").textContent="SCANNING SIGNAL…";$("#sourceStatus").textContent="Connecting to news sources";
+ try{
+  let result=null,routeError=null;
+  try{const key=localStorage.getItem(STORAGE.key)||"";const res=await fetch("/api/news",{headers:key?{"x-api-key":key}:{},signal:AbortSignal.timeout(10000)});if(!res.ok)throw new Error("API route returned "+res.status);const data=await res.json();const list=Array.isArray(data)?data:(data.items||data.articles||[]);if((data.status==="ok"||list.length)&&list.length)result=list;else routeError=new Error("No articles from local route");}catch(e){routeError=e}
+  if(result){rssFallbackUsed=false;cachedArticles=result.map(normalizeArticle);$("#sourceStatus").textContent="Local /api/news route";$("#newsStatus").textContent="SIGNAL SYNCED · LOCAL API";}else{
+   $("#newsStatus").textContent="LOCAL ROUTE UNAVAILABLE · TRYING RSS";const rss=await fetchRSSFallback();cachedArticles=rss.map(normalizeArticle);rssFallbackUsed=true;$("#sourceStatus").textContent="Google News RSS via proxy";$("#newsStatus").textContent="SIGNAL SYNCED · RSS FALLBACK";
+  }
+  renderArticles();
+ }catch(e){console.warn("News fetch failed",e);$("#sourceStatus").textContent="Sources unavailable";$("#newsStatus").textContent="NO SIGNAL · RETRY LATER";$("#articleCount").textContent="0";$("#newsFeed").innerHTML=`<div class="glass rounded-2xl p-8 md:col-span-2"><div class="text-pink font-bold mb-2">Radar temporarily offline</div><p class="text-sm text-zinc-400 leading-6">The local <code>/api/news</code> route and RSS proxies could not be reached. Check your connection or host this file with the included API route, then scan again.</p><button id="retryInline" class="mt-4 rounded-xl bg-white text-zinc-950 px-4 py-2 text-xs font-bold">Retry connection</button></div>`;$("#retryInline")?.addEventListener("click",fetchBabyMonsterNews);
+ }finally{btn.disabled=false}
+}
+function getEvents(){try{const e=JSON.parse(localStorage.getItem(STORAGE.events)||"[]");return Array.isArray(e)?e:[]}catch{return []}}
+function saveEvents(e){localStorage.setItem(STORAGE.events,JSON.stringify(e))}
+function renderEvents(){
+ const events=getEvents().sort((a,b)=>new Date(a.date)-new Date(b.date));const fmt=n=>String(n).padStart(2,"0");
+ const now=Date.now();
+ const defaultCard=`<article class="glass rounded-2xl p-5"><div class="flex items-start justify-between gap-3"><div><div class="tiny-label mono text-pink mb-2">OFFICIAL ANNOUNCEMENTS</div><h3 class="font-bold text-lg">Comebacks & tour dates</h3><p class="text-sm text-zinc-400 mt-2 leading-6">No future date is listed here without confirmation. Add a verified event or fan watch party below.</p></div><span class="text-2xl">◷</span></div><a class="inline-flex mt-4 text-xs text-pink" target="_blank" rel="noopener" href="https://www.ygfamily.com/">Check YG official updates ↗</a></article>`;
+ $("#eventList").innerHTML=defaultCard+events.map(e=>{const ts=new Date(e.date).getTime(),diff=ts-now,valid=Number.isFinite(ts);let time="Date unavailable";if(valid&&diff>0){const days=Math.floor(diff/864e5),hours=Math.floor(diff%864e5/36e5),mins=Math.floor(diff%36e5/6e4),secs=Math.floor(diff%6e4/1e3);time=`${days}d ${fmt(hours)}h ${fmt(mins)}m ${fmt(secs)}s`}else if(valid)time="Event time reached";return `<article class="glass rounded-2xl p-5"><div class="flex justify-between gap-4"><div><div class="tiny-label mono text-violet mb-2">COMMUNITY EVENT</div><h3 class="font-bold">${esc(e.name)}</h3><p class="text-xs text-zinc-500 mt-2">${valid?esc(new Date(ts).toLocaleString()):"Invalid date"} · ${esc(Intl.DateTimeFormat().resolvedOptions().timeZone||"Local time")}</p></div><button class="remove-event text-zinc-500 hover:text-pink text-xl" data-id="${esc(e.id)}" aria-label="Delete ${esc(e.name)}">×</button></div><div class="mono text-lg sm:text-xl font-bold gradient-text mt-4" data-countdown="${esc(e.id)}">${time}</div></article>`}).join("");
+}
+function updateCountdowns(){
+ const now=Date.now();$$("[data-countdown]").forEach(el=>{const e=getEvents().find(e=>e.id===el.dataset.countdown);if(!e)return;const diff=new Date(e.date).getTime()-now;if(!Number.isFinite(diff)){el.textContent="Date unavailable";return}if(diff<=0){el.textContent="Event time reached";return}const d=Math.floor(diff/864e5),h=Math.floor(diff%864e5/36e5),m=Math.floor(diff%36e5/6e4),s=Math.floor(diff%6e4/1e3);el.textContent=`${d}d ${String(h).padStart(2,"0")}h ${String(m).padStart(2,"0")}m ${String(s).padStart(2,"0")}s`});
+}
+function switchTab(tab){
+ $$(".tab-btn").forEach(b=>{const active=b.dataset.tab===tab;b.classList.toggle("active",active);b.setAttribute("aria-current",active?"page":"false")});
+ $$(".tab-panel").forEach(p=>p.classList.toggle("hidden-panel",p.id!=="panel-"+tab));
+}
+$$(".tab-btn").forEach(b=>b.addEventListener("click",()=>switchTab(b.dataset.tab)));
+$("#refreshBtn").addEventListener("click",fetchBabyMonsterNews);
+$("#sortSelect").addEventListener("change",renderArticles);$("#dateSelect").addEventListener("change",renderArticles);
+$("#albumGrid").addEventListener("click",e=>{const b=e.target.closest(".track-btn");if(b)showTrack(Number(b.dataset.album),Number(b.dataset.track))});
+$("#memberFilters").addEventListener("click",e=>{const b=e.target.closest("[data-filter]");if(!b)return;$$(".filter-btn").forEach(x=>{x.classList.toggle("border-pink/40",x===b);x.classList.toggle("bg-pink/10",x===b);x.classList.toggle("text-zinc-400",x!==b)});renderMembers(b.dataset.filter)});
+$("#settingsOpen").addEventListener("click",()=>{const key=localStorage.getItem(STORAGE.key)||"";$("#apiKeyInput").value=key;$("#settingsMessage").textContent=key?"A key is currently saved in this browser.":"No API key saved.";openModal("settingsModal")});
+$("#saveKey").addEventListener("click",()=>{const key=$("#apiKeyInput").value.trim();if(key)localStorage.setItem(STORAGE.key,key);else localStorage.removeItem(STORAGE.key);$("#settingsMessage").textContent=key?"Saved in this browser.":"Key cleared; local API will be called without it.";setTimeout(()=>closeModal("settingsModal"),650)});
+$("#clearKey").addEventListener("click",()=>{$("#apiKeyInput").value="";localStorage.removeItem(STORAGE.key);$("#settingsMessage").textContent="Saved key cleared."});
+$$("[data-close]").forEach(b=>b.addEventListener("click",()=>closeModal(b.dataset.close)));
+["settingsModal","infoModal"].forEach(id=>$("#"+id).addEventListener("click",e=>{if(e.target.id===id)closeModal(id)}));
+document.addEventListener("keydown",e=>{if(e.key==="Escape")["settingsModal","infoModal"].forEach(closeModal)});
+$("#eventForm").addEventListener("submit",e=>{e.preventDefault();const name=$("#eventName").value.trim(),date=$("#eventDate").value;if(!name||!date)return;const ts=new Date(date).getTime();if(!Number.isFinite(ts)){alert("Please choose a valid date and time.");return}const events=getEvents();events.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),name,date:new Date(ts).toISOString()});saveEvents(events);$("#eventName").value="";$("#eventDate").value="";renderEvents()});
+$("#eventList").addEventListener("click",e=>{const b=e.target.closest(".remove-event");if(!b)return;saveEvents(getEvents().filter(x=>x.id!==b.dataset.id));renderEvents()});
+renderAlbums();renderMembers();renderEvents();setInterval(updateCountdowns,1000);fetchBabyMonsterNews();
+</script>
+</body>
+</html>
