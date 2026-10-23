@@ -59,7 +59,7 @@
         <!-- API Key Setup Modal -->
         <div id="apiKeyModal" class="hidden mb-6 p-6 rounded-2xl glass border border-accentPink/30">
             <h2 class="text-lg font-bold mb-2">🔑 Enter Your Gemini API Key</h2>
-            <p class="text-zinc-400 text-xs mb-4">Stored locally in your browser. (Optional: RSS feed fallback is used if quota is reached).</p>
+            <p class="text-zinc-400 text-xs mb-4">Stored locally in your browser. If Gemini quota is exceeded, the site automatically loads live Google News updates.</p>
             <div class="flex gap-2">
                 <input type="password" id="apiKeyInput" placeholder="AQ... or AIzaSy..." class="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-2 text-xs text-zinc-100 focus:outline-none focus:border-accentPink mono">
                 <button onclick="saveApiKey()" class="px-5 py-2 rounded-xl bg-accentPink text-white font-semibold text-xs hover:opacity-90 transition">Save Key</button>
@@ -105,7 +105,7 @@
                 document.getElementById('apiKeyModal').classList.add('hidden');
                 fetchBabyMonsterNews();
             } else {
-                alert('Please enter a valid Gemini API key.');
+                alert('Please enter a valid API key.');
             }
         }
 
@@ -114,30 +114,65 @@
             document.getElementById('apiKeyModal').classList.remove('hidden');
         }
 
+        // Reliable RSS fallback using standard DOMParser & CORS Proxy
         async function fetchRssFallback() {
             const feed = document.getElementById('newsFeed');
             try {
-                const rssUrl = 'https://news.google.com/rss/search?q=BABYMONSTER+kpop&hl=en-US&gl=US&ceid=US:en';
-                const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`);
-                const data = await response.json();
+                const targetRssUrl = 'https://news.google.com/rss/search?q=BABYMONSTER+kpop&hl=en-US&gl=US&ceid=US:en';
+                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetRssUrl)}`;
+                
+                const res = await fetch(proxyUrl);
+                const data = await res.json();
+                
+                if (!data.contents) throw new Error("No XML contents returned");
 
-                if (data.status === 'ok' && data.items.length > 0) {
-                    feed.innerHTML = data.items.slice(0, 8).map(item => `
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data.contents, "text/xml");
+                const items = xmlDoc.querySelectorAll("item");
+
+                if (items.length === 0) {
+                    feed.innerHTML = `<div class="p-6 rounded-2xl glass text-center text-zinc-400">No fresh items found right now. Check back soon!</div>`;
+                    return;
+                }
+
+                let html = '';
+                let count = 0;
+                items.forEach(item => {
+                    if (count >= 10) return;
+                    
+                    const title = item.querySelector("title")?.textContent || "BABYMONSTER Update";
+                    const link = item.querySelector("link")?.textContent || "#";
+                    const pubDateRaw = item.querySelector("pubDate")?.textContent;
+                    const pubDate = pubDateRaw ? new Date(pubDateRaw).toLocaleDateString() : "Recent";
+                    const source = item.querySelector("source")?.textContent || "Google News";
+                    
+                    let description = item.querySelector("description")?.textContent || "";
+                    description = description.replace(/<[^>]*>?/gm, '').slice(0, 180);
+
+                    html += `
                         <article class="p-6 rounded-2xl glass hover:border-accentPink/40 transition group">
                             <div class="flex items-center justify-between text-xs mono text-zinc-400 mb-2">
-                                <span class="text-accentPink font-semibold">${item.author || 'Google News'}</span>
-                                <span>${new Date(item.pubDate).toLocaleDateString()}</span>
+                                <span class="text-accentPink font-semibold">${source}</span>
+                                <span>${pubDate}</span>
                             </div>
-                            <h2 class="text-xl font-bold mb-2 group-hover:text-pink-300 transition">${item.title}</h2>
-                            <p class="text-zinc-300 text-sm leading-relaxed mb-4">${item.description.replace(/<[^>]*>?/gm, '').slice(0, 180)}...</p>
-                            <a href="${item.link}" target="_blank" class="inline-flex items-center text-xs font-semibold text-accentPink hover:underline">Read full article &rarr;</a>
+                            <h2 class="text-xl font-bold mb-2 group-hover:text-pink-300 transition">${title}</h2>
+                            ${description ? `<p class="text-zinc-300 text-sm leading-relaxed mb-4">${description}...</p>` : ''}
+                            <a href="${link}" target="_blank" rel="noopener" class="inline-flex items-center text-xs font-semibold text-accentPink hover:underline">Read full article &rarr;</a>
                         </article>
-                    `).join('');
-                } else {
-                    feed.innerHTML = `<div class="p-6 rounded-2xl glass text-center text-zinc-400">No news found right now. Try again later!</div>`;
-                }
-            } catch (rssErr) {
-                feed.innerHTML = `<div class="p-6 rounded-2xl glass text-center text-red-400">Failed to load news feed.</div>`;
+                    `;
+                    count++;
+                });
+
+                feed.innerHTML = html;
+
+            } catch (err) {
+                console.error("RSS Error:", err);
+                feed.innerHTML = `
+                    <div class="p-6 rounded-2xl glass border border-red-500/20 text-center">
+                        <p class="text-red-400 font-semibold mb-1">Failed to load news feed</p>
+                        <p class="text-zinc-400 text-xs">Please try clicking "Scan Updates Now" again or update your Gemini API key.</p>
+                    </div>
+                `;
             }
         }
 
@@ -152,7 +187,7 @@
             statusBox.classList.remove('hidden');
             refreshBtn.disabled = true;
             refreshBtn.classList.add('opacity-50');
-            statusText.innerText = "Querying live web sources for BABYMONSTER updates...";
+            statusText.innerText = "Querying live web sources...";
 
             try {
                 const apiKey = getApiKey();
@@ -172,8 +207,8 @@
                 const data = await response.json();
 
                 if (data.error) {
-                    console.warn("API Quota/Limit reached, switching to RSS fallback:", data.error.message);
-                    statusText.innerText = "API Quota reached — pulling live Google News feed fallback...";
+                    console.warn("API quota/error, falling back to RSS:", data.error.message);
+                    statusText.innerText = "Quota reached — loading live RSS news stream...";
                     await fetchRssFallback();
                     return;
                 }
@@ -194,14 +229,14 @@
                             </div>
                             <h2 class="text-xl font-bold mb-2 group-hover:text-pink-300 transition">${item.title}</h2>
                             <p class="text-zinc-300 text-sm leading-relaxed mb-4">${item.summary}</p>
-                            ${item.url ? `<a href="${item.url}" target="_blank" class="inline-flex items-center text-xs font-semibold text-accentPink hover:underline">Read full report &rarr;</a>` : ''}
+                            ${item.url ? `<a href="${item.url}" target="_blank" rel="noopener" class="inline-flex items-center text-xs font-semibold text-accentPink hover:underline">Read full report &rarr;</a>` : ''}
                         </article>
                     `).join('');
                 }
 
             } catch (err) {
                 console.error(err);
-                statusText.innerText = "Switching to live RSS news feed...";
+                statusText.innerText = "Loading live news feed...";
                 await fetchRssFallback();
             } finally {
                 statusBox.classList.add('hidden');
