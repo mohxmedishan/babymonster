@@ -1,6 +1,6 @@
 # BABYMONSTER.HUB — MONSTIEZ fan terminal
 
-A responsive BABYMONSTER fan dashboard with a black/chrome/crimson/acid-lime visual identity, randomized official YG portrait wallpaper, dynamic music discovery, official member profile portraits, news aggregation, and local event countdowns.
+A responsive BABYMONSTER fan dashboard with a black/chrome/crimson/acid-lime visual identity, dedicated atmospheric concert-banner wallpaper, dynamic music discovery, official member profile portraits, news aggregation, and local event countdowns.
 
 ## What's included
 
@@ -42,3 +42,10 @@ The member cards use image URLs from YG Entertainment's public BABYMONSTER profi
 - News RSS and music catalog routes require internet access from the server.
 - The browser stores only user-added events and the optional news key setting in local storage. No API secret is required by the music catalog route.
 - This is a fan-made project and is not affiliated with YG Entertainment.
+
+## Improvements in this build
+
+- Fixed the missing `normalizeArticle()` function that caused a successful news response to fail before rendering.
+- News cards now normalize common RSS/API date, publisher, description, and link fields and handle links safely.
+- Replaced the random member-portrait page background with a dedicated concert-crowd banner image and a darker responsive overlay for readable content.
+- Refined card depth, member image hover behavior, and responsive news grid spacing.
