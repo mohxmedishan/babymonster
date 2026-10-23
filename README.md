@@ -22,7 +22,7 @@ Open the local URL printed by Vercel. The app calls `/api/news` and `/api/discog
 
 ## Deploy
 
-1. Import the **entire `babymonster-hub` folder** into Vercel (not just `index.html`). The `api/` folder must sit next to `index.html` at the project root.
+1. Deploy the contents of this ZIP as the Vercel project root. `index.html`, `api/`, `assets/`, and `vercel.json` must all be directly inside the Root Directory; do not leave them nested inside an extra `babymonster-hub/` folder, and do not deploy only `index.html`.
 2. Deploy with the Vercel CLI or the Vercel dashboard.
 3. After deployment, visit `/api/news` and `/api/discography` on your domain; each should return JSON. If either shows a 404, fix the Vercel project Root Directory so it points to the folder containing `index.html`, `api/`, and `vercel.json`. No music API key is required for the public catalog sources.
 
@@ -44,4 +44,4 @@ The member cards use image URLs from YG Entertainment's public BABYMONSTER profi
 - This is a fan-made project and is not affiliated with YG Entertainment.
 
 ## Banner image
-The current image is stored at `assets/babymonster-banner.jpg`. It was extracted from the Weverse banner screenshot supplied for this project, with the overlaid page title and button removed. To update it for a later comeback, replace this file with the new wide banner image and keep the same filename. `api/news.js`, `api/discography.js`, and `vercel.json` are unchanged.
+The sharp banner image is stored at `assets/babymonster-banner.jpg`; the page wallpaper uses the separate blurred `assets/babymonster-banner-blur.jpg`. The Good Vibes hero card now uses the sharp image as its own background. The banner was extracted from the Weverse banner screenshot supplied for this project, with the overlaid page title and button removed. To update it for a later comeback, replace this file with the new wide banner image and keep the same filename. `api/news.js`, `api/discography.js`, and `vercel.json` are unchanged.
