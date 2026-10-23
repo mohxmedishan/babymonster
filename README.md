@@ -42,3 +42,6 @@ The member cards use image URLs from YG Entertainment's public BABYMONSTER profi
 - News RSS and music catalog routes require internet access from the server.
 - The browser stores only user-added events and the optional news key setting in local storage. No API secret is required by the music catalog route.
 - This is a fan-made project and is not affiliated with YG Entertainment.
+
+## Banner image
+The current image is stored at `assets/babymonster-banner.jpg`. It was extracted from the Weverse banner screenshot supplied for this project, with the overlaid page title and button removed. To update it for a later comeback, replace this file with the new wide banner image and keep the same filename. `api/news.js`, `api/discography.js`, and `vercel.json` are unchanged.
