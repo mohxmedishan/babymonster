@@ -1,6 +1,6 @@
 # BABYMONSTER.HUB — MONSTIEZ fan terminal
 
-A responsive single-page fan dashboard with a dark glassmorphism UI, dynamic music discovery, official member profile portraits, news aggregation, and local event countdowns.
+A responsive BABYMONSTER fan dashboard with a black/chrome/crimson/acid-lime visual identity, randomized official YG portrait wallpaper, dynamic music discovery, official member profile portraits, news aggregation, and local event countdowns.
 
 ## What's included
 
@@ -22,9 +22,9 @@ Open the local URL printed by Vercel. The app calls `/api/news` and `/api/discog
 
 ## Deploy
 
-1. Put the files in a Git repository or import the project directory into Vercel.
+1. Import the **entire `babymonster-hub` folder** into Vercel (not just `index.html`). The `api/` folder must sit next to `index.html` at the project root.
 2. Deploy with the Vercel CLI or the Vercel dashboard.
-3. No music API key is required for the public catalog sources used by the first version.
+3. After deployment, visit `/api/news` and `/api/discography` on your domain; each should return JSON. If either shows a 404, fix the Vercel project Root Directory so it points to the folder containing `index.html`, `api/`, and `vercel.json`. No music API key is required for the public catalog sources.
 
 ## How dynamic discography works
 
